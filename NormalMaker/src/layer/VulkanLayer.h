@@ -55,6 +55,7 @@ public:
 	virtual void OnResize(const glm::uvec2& size);
 
 private:
+	void DrawNormalArrows();
 	void CalculateNormalArrow(std::vector<DebugRendererVertex>& lines, const NormalArrow& arrow, const glm::vec3& color) const;
 
 	void DispatchNormal(const Layer& layer) const;

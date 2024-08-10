@@ -284,15 +284,7 @@ void VulkanLayer::OnUpdate(float dt)
         m_NormalArrows.Arrows[m_NormalArrows.Count++] = NormalArrow{ point, point + glm::vec2(0.0f, 20.0f), glm::radians(0.001f) };
         m_IsMovingNormalArrow = true;
 
-        constexpr glm::vec3 color(1.0f);
-        constexpr glm::vec3 selected(0.8f, 0.3f, 0.2f);
-
-        std::vector<DebugRendererVertex> lines;
-
-        for (int i = 0; i < m_NormalArrows.Count; ++i)
-            CalculateNormalArrow(lines, m_NormalArrows.Arrows[i], i == m_SelectedNormalArrow ? selected : color);
-
-        m_NormalArrowsRenderer->AddLines(lines);
+        DrawNormalArrows();
     }
 
     if (Input::IsMouseUp(MouseButton::Right))
@@ -306,16 +298,7 @@ void VulkanLayer::OnUpdate(float dt)
         if(point != arrow.Start)
             arrow.End = arrow.Start + glm::normalize(point - arrow.Start) * maxDist;
 
-        constexpr glm::vec3 color(1.0f);
-        constexpr glm::vec3 selected(0.8f, 0.3f, 0.2f);
-
-        std::vector<DebugRendererVertex> lines;
-
-        for (int i = 0; i < m_NormalArrows.Count; ++i)
-            CalculateNormalArrow(lines, m_NormalArrows.Arrows[i], i == m_SelectedNormalArrow ? selected : color);
-
-        m_NormalArrowsRenderer->ClearLines();
-        m_NormalArrowsRenderer->AddLines(lines);
+        DrawNormalArrows();
     }
 }
 
@@ -555,16 +538,7 @@ void VulkanLayer::OnImGuiRender()
                     const glm::vec2 t{ std::cos(orientation), -std::sin(orientation) };
                     arrow.End = arrow.Start + t * 20.0f;
 
-                    constexpr glm::vec3 color(1.0f);
-                    constexpr glm::vec3 selected(0.8f, 0.3f, 0.2f);
-
-                    std::vector<DebugRendererVertex> lines;
-
-                    for (int i = 0; i < m_NormalArrows.Count; ++i)
-                        CalculateNormalArrow(lines, m_NormalArrows.Arrows[i], i == m_SelectedNormalArrow ? selected : color);
-
-                    m_NormalArrowsRenderer->ClearLines();
-                    m_NormalArrowsRenderer->AddLines(lines);
+                    DrawNormalArrows();
                 }
             }
 
@@ -581,32 +555,14 @@ void VulkanLayer::OnImGuiRender()
             {
                 m_SelectedNormalArrow = i;
 
-                constexpr glm::vec3 color(1.0f);
-                constexpr glm::vec3 selected(0.8f, 0.3f, 0.2f);
-
-                std::vector<DebugRendererVertex> lines;
-
-                for (int i = 0; i < m_NormalArrows.Count; ++i)
-                    CalculateNormalArrow(lines, m_NormalArrows.Arrows[i], i == m_SelectedNormalArrow ? selected : color);
-
-                m_NormalArrowsRenderer->ClearLines();
-                m_NormalArrowsRenderer->AddLines(lines);
+                DrawNormalArrows();
             }
 
             if (isSelected && ImGui::Button("Deselect", ImVec2{ freeSpace.x / 2, 0 }))
             {
                 m_SelectedNormalArrow = -1;
 
-                constexpr glm::vec3 color(1.0f);
-                constexpr glm::vec3 selected(0.8f, 0.3f, 0.2f);
-
-                std::vector<DebugRendererVertex> lines;
-
-                for (int i = 0; i < m_NormalArrows.Count; ++i)
-                    CalculateNormalArrow(lines, m_NormalArrows.Arrows[i], i == m_SelectedNormalArrow ? selected : color);
-
-                m_NormalArrowsRenderer->ClearLines();
-                m_NormalArrowsRenderer->AddLines(lines);
+                DrawNormalArrows();
             }
 
             ImGui::Separator();
@@ -624,16 +580,7 @@ void VulkanLayer::OnImGuiRender()
             if (m_SelectedNormalArrow >= m_NormalArrows.Count && m_SelectedNormalArrow >= 0)
                 m_SelectedNormalArrow = m_NormalArrows.Count > 0 ? static_cast<int>(m_NormalArrows.Count - 1) : -1;
 
-            constexpr glm::vec3 color(1.0f);
-            constexpr glm::vec3 selected(0.8f, 0.3f, 0.2f);
-
-            std::vector<DebugRendererVertex> lines;
-
-            for (int i = 0; i < m_NormalArrows.Count; ++i)
-                CalculateNormalArrow(lines, m_NormalArrows.Arrows[i], i == m_SelectedNormalArrow ? selected : color);
-
-            m_NormalArrowsRenderer->ClearLines();
-            m_NormalArrowsRenderer->AddLines(lines);
+            DrawNormalArrows();
         }
     }
     ImGui::End();
@@ -673,6 +620,20 @@ void VulkanLayer::OnResize(const glm::uvec2& size)
     m_DepthImageView = m_Application->GetDepthImageView();
 
     m_ViewportImageSampler = m_Application->GetViewportImageSampler();
+}
+
+void VulkanLayer::DrawNormalArrows()
+{
+    constexpr glm::vec3 color(1.0f);
+    constexpr glm::vec3 selected(0.8f, 0.3f, 0.2f);
+
+    std::vector<DebugRendererVertex> lines;
+
+    for (int i = 0; i < m_NormalArrows.Count; ++i)
+        CalculateNormalArrow(lines, m_NormalArrows.Arrows[i], i == m_SelectedNormalArrow ? selected : color);
+
+    m_NormalArrowsRenderer->ClearLines();
+    m_NormalArrowsRenderer->AddLines(lines);
 }
 
 void VulkanLayer::CalculateNormalArrow(std::vector<DebugRendererVertex>& lines, const NormalArrow& arrow, const glm::vec3& color) const
@@ -768,14 +729,7 @@ void VulkanLayer::LoadProject()
     in.read((char*)&m_NormalArrows.Count, sizeof(int));
     in.read((char*)m_NormalArrows.Arrows, sizeof(NormalArrow) * m_NormalArrows.Count);
 
-    constexpr glm::vec3 color(1.0f);
-
-    std::vector<DebugRendererVertex> lines;
-
-    for (int i = 0; i < m_NormalArrows.Count; ++i)
-        CalculateNormalArrow(lines, m_NormalArrows.Arrows[i], color);
-
-    m_NormalArrowsRenderer->AddLines(lines);
+    DrawNormalArrows();
 
     m_LayerManager->LoadLayers(in);
 

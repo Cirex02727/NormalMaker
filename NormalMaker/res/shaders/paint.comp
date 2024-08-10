@@ -1,0 +1,25 @@
+#version 450
+
+layout (local_size_x = 16, local_size_y = 16) in;
+
+layout (binding = 0, rgba8) writeonly uniform image2D layer;
+
+layout(push_constant) uniform constants {
+    vec4  color;
+    ivec2 imageSize;
+    ivec2 position;
+    int   radius;
+} PushConstants;
+
+void main()
+{
+    ivec2 coords = ivec2(gl_GlobalInvocationID.xy);
+
+    ivec2 dist = abs(coords + PushConstants.position);
+
+    if(any(greaterThanEqual(coords, PushConstants.imageSize)) ||
+        any(greaterThanEqual(dist, ivec2(PushConstants.radius))))
+        return;
+
+    imageStore(layer, coords, PushConstants.color);
+}

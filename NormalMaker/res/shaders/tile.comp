@@ -1,0 +1,25 @@
+#version 450
+
+layout (local_size_x = 16, local_size_y = 16) in;
+
+layout (binding = 0, rgba8) writeonly uniform image2D tileImage;
+
+layout (binding = 1) uniform sampler2D atlas;
+
+layout(push_constant) uniform constants {
+    vec4 tile;
+} PushConstants;
+
+void main()
+{
+    vec2 coords = gl_GlobalInvocationID.xy;
+
+    vec4 pixel = texture(atlas, (coords + 0.5) * PushConstants.tile.zw + PushConstants.tile.xy);
+    if(pixel.a == 0.0)
+        pixel = vec4(0.01, 0.01, 0.01, 1.0);
+    
+    // Gamma corretion
+    pixel = pow(pixel, vec4(vec3(1.0 / 2.2), 1.0));
+
+    imageStore(tileImage, ivec2(coords), pixel);
+}

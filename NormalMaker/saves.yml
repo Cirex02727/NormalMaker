@@ -1,0 +1,15 @@
+Window:
+  WindowState: 0
+  PrevWidth: 1253
+  PrevHeight: 793
+  PrevX: 330
+  PrevY: 118
+Camera:
+  Position:
+    - -60.0218735
+    - -629.755798
+    - 0
+  Zoom: 310.099976
+Global:
+  GridDepth: -94.9000015
+  BrushRadius: 9

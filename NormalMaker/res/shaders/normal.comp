@@ -1,0 +1,85 @@
+#version 450
+#extension GL_EXT_debug_printf : enable
+
+#define MAX_NORMAL_ARROWS 256
+
+#define PI 3.1415926535897932384626433832795
+
+layout (local_size_x = 16, local_size_y = 16) in;
+
+layout (binding = 0, rgba8) uniform image2D layer;
+
+struct NormalArrow
+{
+    vec4 poses;
+    vec4 angle;
+};
+
+layout(set = 0, binding = 1) uniform ArrowsObject {
+    NormalArrow r[MAX_NORMAL_ARROWS];
+    int count;
+} arrows;
+
+layout(push_constant) uniform constants {
+    ivec2 imageSize;
+} PushConstants;
+
+
+bool PrintfEnabled = false;
+
+
+vec3 CalculateNormalFromArrow(NormalArrow arrow)
+{
+    vec2 v = arrow.poses.zw - arrow.poses.xy;
+    return normalize(vec3(v / arrow.angle.x, length(v) * tan(arrow.angle.x))) * 0.5 + 0.5;
+}
+
+float CalculateArrowDistance(vec2 coords, vec2 arrowPos)
+{
+    return exp(-0.35 * distance(coords, arrowPos));
+}
+
+void main()
+{
+    int count = arrows.count;
+    if(count == 0)
+        return;
+
+
+    ivec2 icoords = ivec2(gl_GlobalInvocationID.xy);
+
+    if(any(greaterThanEqual(icoords, PushConstants.imageSize)))
+        return;
+
+    if(any(greaterThan(abs(imageLoad(layer, icoords) - vec4(0.5, 0.5, 0.5, 1.0)), vec4(0.004))))
+        return;
+
+    vec2 coords = vec2(gl_GlobalInvocationID.xy);
+
+    if(coords == vec2(32.0, 650.0))
+        PrintfEnabled = true;
+
+
+    float dists[MAX_NORMAL_ARROWS];
+    float weight = 0.0;
+
+    for(int i = 0; i < count; ++i)
+    {
+        NormalArrow arrow = arrows.r[i];
+        float d = CalculateArrowDistance(coords, arrow.poses.xy);
+
+        dists[i]  = d;
+        weight   += d;
+    }
+
+    vec3 color = vec3(0.0);
+    for(int i = 0; i < count; ++i)
+    {
+        NormalArrow arrow = arrows.r[i];
+        color += CalculateNormalFromArrow(arrow) * (dists[i] / weight);
+    }
+
+    color = normalize(color * 2 - 1) * 0.5 + 0.5;
+    
+    imageStore(layer, icoords, vec4(color, 1.0));
+}

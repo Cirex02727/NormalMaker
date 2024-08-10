@@ -16,34 +16,46 @@ scripts/Win-GenProjects.bat
 
 Import or create a project via the "Project" tab in the tab menu.
 
-<img style="display: block; margin: 0 auto" src="Resources/Project.png">
+<div style="text-align: center;">
+    <img src="Resources/Project.png">
+</div>
 
 ### Image
 
 Then import a base image as layer 0, you will calculate the normals using that layer.
 
-<img style="display: block; margin: 0 auto" src="Resources/Image.png">
+<div style="text-align: center;">
+    <img src="Resources/Image.png">
+</div>
 
 ### Layers
 
 A layer will be added to the layer list whose position, z-order and alpha can be changed.
 
-<img style="display: block; margin: 0 auto" src="Resources/Layers.png">
+<div style="text-align: center;">
+    <img src="Resources/Layers.png">
+</div>
 
 With the New button you will add a normal layer on which you can calculate the normal vectors.
 With the select button you select that layer to paint "Null Vectors" on it.
 
-<img style="display: block; margin: 0 auto" src="Resources/NormalLayer.png">
+<div style="text-align: center;">
+    <img src="Resources/NormalLayer.png">
+</div>
 
 ### Paint
 
 By selecting "Use Normal Brush" you can paint the "Null Vectors" on the selected layer, otherwise you can paint specific colors by deselecting it.
 
-<img style="display: block; margin: 0 auto" src="Resources/Paint.png">
+<div style="text-align: center;">
+    <img src="Resources/Paint.png">
+</div>
 
 You can also erase pixels in that layer by selecting "Use Eraser".
 
-<img style="display: block; margin: 0 auto" src="Resources/Erase.png">
+<div style="text-align: center;">
+    <img src="Resources/Erase.png">
+</div>
 
 ### Normal
 
@@ -52,8 +64,12 @@ Each vector can be selected, via the "Normal Arrows" window, and will be highlig
 Furthermore, each vector has the possibility, again via the "Normal Arrows" window, to be correct by direction and you can point it in directions towards the z axis by changing the "Angle" value which by default is 0, which is equivalent to parallel to the image.
 You can take it up to 90°, which is perpendicular to the image.
 
-<img style="display: block; margin: 0 auto" src="Resources/Arrows.png">
+<div style="text-align: center;">
+    <img src="Resources/Arrows.png">
+</div>
 
 With a layer selected, if you press the "Calculate Normals" button, the corresponding normal vectors for each pixel, with the value "Null Vector", will be calculated and normal arrow.
 
-<img style="display: block; margin: 0 auto" src="Resources/Normal.png">
+<div style="text-align: center;">
+    <img src="Resources/Normal.png">
+</div>

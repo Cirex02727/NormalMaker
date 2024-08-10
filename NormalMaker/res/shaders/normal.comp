@@ -36,7 +36,7 @@ vec3 CalculateNormalFromArrow(NormalArrow arrow)
 
 float CalculateArrowDistance(vec2 coords, vec2 arrowPos)
 {
-    return exp(-0.35 * distance(coords, arrowPos));
+    return exp(-0.25 * distance(coords, arrowPos));
 }
 
 void main()

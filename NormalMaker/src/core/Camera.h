@@ -17,6 +17,9 @@ public:
 	void SaveSettings() const;
 	void LoadSettings();
 
+	void SetPosition(const glm::vec3& position) { m_Position = position; RecalculateView(); }
+	void SetZoom(float zoom) { m_Zoom = zoom; RecalculateOrtho(); }
+
 	const glm::mat4& GetOrtho()     const { return m_Ortho;    }
 	const glm::mat4& GetView()      const { return m_View;     }
 

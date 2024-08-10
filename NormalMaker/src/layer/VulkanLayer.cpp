@@ -348,6 +348,10 @@ void VulkanLayer::OnImGuiRenderMenuBar(bool& isRunning)
             m_IsProjectLoaded = true;
 
             LoadProject();
+
+            m_Camera->SetPosition(glm::vec3(-m_CanvasSize / 2, 0.0f));
+            m_Camera->SetZoom((m_CanvasSize.x > m_CanvasSize.y ? m_CanvasSize.x : m_CanvasSize.y) / 2.0f
+                * ((float)m_PrevViewportRegionAvail.y / m_PrevViewportRegionAvail.x) + 20);
         }
 
         if (m_IsProjectLoaded && ImGui::MenuItem("Save Project", "CTRL+S"))
@@ -368,6 +372,10 @@ void VulkanLayer::OnImGuiRenderMenuBar(bool& isRunning)
             {
                 ClearProject(false);
                 BuildGrid();
+
+                m_Camera->SetPosition(glm::vec3(-m_CanvasSize / 2, 0.0f));
+                m_Camera->SetZoom((m_CanvasSize.x > m_CanvasSize.y ? m_CanvasSize.x : m_CanvasSize.y) / 2.0f
+                    * ((float)m_PrevViewportRegionAvail.y / m_PrevViewportRegionAvail.x) + 20);
             }
         }
 
@@ -586,7 +594,20 @@ void VulkanLayer::OnImGuiRender()
             }
 
             if (isSelected && ImGui::Button("Deselect", ImVec2{ freeSpace.x / 2, 0 }))
+            {
                 m_SelectedNormalArrow = -1;
+
+                constexpr glm::vec3 color(1.0f);
+                constexpr glm::vec3 selected(0.8f, 0.3f, 0.2f);
+
+                std::vector<DebugRendererVertex> lines;
+
+                for (int i = 0; i < m_NormalArrows.Count; ++i)
+                    CalculateNormalArrow(lines, m_NormalArrows.Arrows[i], i == m_SelectedNormalArrow ? selected : color);
+
+                m_NormalArrowsRenderer->ClearLines();
+                m_NormalArrowsRenderer->AddLines(lines);
+            }
 
             ImGui::Separator();
 

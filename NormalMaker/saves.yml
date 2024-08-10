@@ -6,10 +6,10 @@ Window:
   PrevY: 118
 Camera:
   Position:
-    - -60.0218735
-    - -629.755798
+    - -140.288788
+    - -617.756287
     - 0
-  Zoom: 310.099976
+  Zoom: 220
 Global:
   GridDepth: -94.9000015
-  BrushRadius: 9
+  BrushRadius: 10

@@ -59,7 +59,7 @@ bool Camera::OnUpdate(float ts)
 void Camera::OnResize(uint32_t width, uint32_t height)
 {
 	float aspect = (float)width / height;
-	if (aspect == m_AspectRatio)
+	if (width == 0 || height == 0 || aspect == m_AspectRatio)
 		return;
 
 	m_AspectRatio = aspect;

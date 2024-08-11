@@ -2,6 +2,8 @@
 
 An application to create normal map textures easily
 
+[![NormalMaker](Resources/NormalMaker_Preview.png)](Resources/NormalMaker.mp4)
+
 ## Build (MSVS)
 
 Run this command to create the solution files:

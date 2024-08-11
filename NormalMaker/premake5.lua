@@ -46,8 +46,14 @@ project "NormalMaker"
 		"%{Library.Vulkan}"
 	}
 	
-	postbuildcommands "%{wks.location}/CompileShaders.bat"
-	
+	postbuildcommands
+	{
+		'{COPY} %{prj.location}res %{cfg.buildtarget.directory}res',
+		'{COPY} %{prj.location}imgui.ini %{cfg.buildtarget.directory}imgui.ini',
+		'{COPY} %{prj.location}saves.yml %{cfg.buildtarget.directory}saves.yml',
+		"%{wks.location}/CompileShaders.bat"
+	}
+
 	filter "system:windows"
 		systemversion "latest"
 	

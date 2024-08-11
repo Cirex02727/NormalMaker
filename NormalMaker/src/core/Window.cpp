@@ -39,6 +39,14 @@ bool Window::CreateGLFWWindow(int width, int height, const char* title)
     }
 
 
+    // Load Icon
+    GLFWimage image{};
+    image.pixels = stbi_load("res/icon.png", &image.width, &image.height, nullptr, 4);
+    glfwSetWindowIcon(m_Window, 1, &image);
+    stbi_image_free(image.pixels);
+
+
+    // Load Window Settings
     if (node["PrevX"].IsDefined() && node["PrevY"].IsDefined())
     {
         m_PrevX = node["PrevX"].as<int>();

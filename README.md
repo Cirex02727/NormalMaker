@@ -2,7 +2,7 @@
 
 An application to create normal map textures easily
 
-[![NormalMaker](Resources/NormalMaker_Preview.png)](Resources/NormalMaker.mp4)
+https://github.com/user-attachments/assets/ccfc4e12-b560-4faf-92a0-086c1e5c3216
 
 ## Build (MSVS)
 

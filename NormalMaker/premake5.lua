@@ -65,3 +65,6 @@ project "NormalMaker"
 		defines "VK_DIST"
 		runtime "Release"
 		optimize "on"
+
+		kind "WindowedApp"
+		entrypoint "mainCRTStartup"

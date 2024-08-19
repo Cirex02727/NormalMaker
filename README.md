@@ -4,13 +4,39 @@ An application to create normal map textures easily
 
 https://github.com/user-attachments/assets/ccfc4e12-b560-4faf-92a0-086c1e5c3216
 
-## Build (MSVS)
+## Build
 
-Run this command to create the solution files:
+First of all run this file if you don't have the VulkanSDK:
+
+```bash
+scripts/SetupVulkan.bat
+```
+
+### MSVS
+
+Run this file to create the solution files:
 
 ```bash
 scripts/Win-GenProjects.bat
 ```
+
+### CMake
+
+Run this file to create all project cmake files:
+
+```bash
+scripts/CMake-GenProjects.bat
+```
+
+Then, in the main folder run:
+
+```bash
+mkdir build
+cd build
+cmake ..
+```
+
+ATTENTION: Once the project has been built it may be necessary, within visual studio, to manually change the c++ version of the "NormalMaker" project, preferably to 20.
 
 ## Usage
 

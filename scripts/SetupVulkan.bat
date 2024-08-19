@@ -21,7 +21,4 @@ call "%WINDIR%\system32\curl.exe" --ssl-no-revoke -o "%path%" "%url%"
 call "%path%"
 
 echo.
-
 popd
-
-PAUSE

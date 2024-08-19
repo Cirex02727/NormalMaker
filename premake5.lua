@@ -1,5 +1,7 @@
 include "Dependencies.lua"
 
+require "cmake"
+
 workspace "NormalMaker"
 	architecture "x86_64"
 	startproject "NormalMaker"

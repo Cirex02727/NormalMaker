@@ -96,7 +96,7 @@ function m.generate(prj)
 		-- include dirs
 		_p('target_include_directories("%s" PRIVATE', prj.name)
 		for _, includedir in ipairs(cfg.includedirs) do
-			_x(1, '$<$<CONFIG:%s>:%s>', cmake.cfgname(cfg), includedir)
+			_x(1, '$<$<CONFIG:%s>:%s>', cmake.cfgname(cfg), p.esc(includedir):gsub('\\', '/'))
 		end
 		_p(')')
 
